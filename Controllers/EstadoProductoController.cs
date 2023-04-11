@@ -76,7 +76,7 @@ namespace SugaryContabilidad_API.Controllers
             ExistEstado.Estado = EstadoProducto.Estado;
             await SCC.SaveChangesAsync();
             OR.message = HttpResponseText.PutEstado;
-            OR.isSucess = false;
+            OR.isSucess = true;
             OR.Data = ExistEstado;
             return Ok(OR);
         }
@@ -95,7 +95,7 @@ namespace SugaryContabilidad_API.Controllers
             ExistEstado.Status = false;
             await SCC.SaveChangesAsync();
             OR.message = HttpResponseText.PutEstadoDelete;
-            OR.isSucess = false;
+            OR.isSucess = true;
             OR.Data = ExistEstado.Estado;
             return Ok(OR);
         }

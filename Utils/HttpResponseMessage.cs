@@ -11,7 +11,7 @@
         public static readonly string ExistProducto = "Este producto ya existe";
         public static readonly string CreateProducto = "Producto creado con exito!";
         public static readonly string PutProducto = "Producto modificado con exito!";
-        public static readonly string PutProductoNotFound = "Este producto no pudo encontrarse!";
+        public static readonly string PutProductoNotFound = "Este Producto no pudo encontrarse!";
         public static readonly string PutProductoDelete = "Producto eliminado con exito!";
 
         //EstadoProducto
@@ -20,6 +20,13 @@
         public static readonly string PutEstadoNotFound = "Este Estado de producto no pudo encontrarse!";
         public static readonly string PutEstado = "Estado de producto modificado con exito!";
         public static readonly string PutEstadoDelete = "Estado de producto eliminado con exito!";
+
+        //MetodoVenta
+        public static readonly string ExistMetodoVenta = "Este Metodo de venta ya existe";
+        public static readonly string CreateMetodoVenta = "Metodo de creado con exito!";
+        public static readonly string PutMetodoNotFound = "Este Metodo de venta no pudo encontrarse!";
+        public static readonly string PutMetodo = "Metodo de venta modificado con exito!";
+        public static readonly string PutMetodoDelete = "Metodo de vente eliminado con exito!";
 
         //200OK
         public static readonly string OK = "OK.";

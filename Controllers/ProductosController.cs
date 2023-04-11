@@ -89,7 +89,7 @@ namespace SugaryContabilidad_API.Controllers
 
             await SCC.SaveChangesAsync();
             OR.message = HttpResponseText.PutProducto;
-            OR.isSucess = false;
+            OR.isSucess = true;
             OR.Data = ExistProduct;
             return Ok(OR);
         }
@@ -109,7 +109,7 @@ namespace SugaryContabilidad_API.Controllers
 
             await SCC.SaveChangesAsync();
             OR.message = HttpResponseText.PutProductoDelete;
-            OR.isSucess = false;
+            OR.isSucess = true;
             OR.Data = ExistProduct.NombreProducto;
             return Ok(OR);
         }
