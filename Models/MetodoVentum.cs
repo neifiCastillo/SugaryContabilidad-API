@@ -7,6 +7,10 @@ namespace SugaryContabilidad_API.Models
     {
         public int IdMetodo { get; set; }
         public string Metodo { get; set; } = null!;
+        public string NumeroReferencia { get; set; } = null!;
+        public string TipoReferencia { get; set; } = null!;
+        public string CedulaReferencia { get; set; } = null!;
+        public string? NombrePerteneceReferencia { get; set; }
         public string? Color { get; set; }
         public bool Status { get; set; }
     }

@@ -15,5 +15,6 @@ namespace SugaryContabilidad_API.Models
         public string EstadoProducto { get; set; } = null!;
         public int CantidadPrecio { get; set; }
         public DateTime FechaVenta { get; set; }
+        public bool Status { get; set; }
     }
 }

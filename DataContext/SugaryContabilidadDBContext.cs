@@ -65,7 +65,7 @@ namespace SugaryContabilidad_API.DataContext
                 entity.ToTable("Deudas", "SCC");
 
                 entity.Property(e => e.CedulaDeudor)
-                    .HasMaxLength(13)
+                    .HasMaxLength(11)
                     .IsUnicode(false);
 
                 entity.Property(e => e.FechaAporte).HasColumnType("date");
@@ -96,7 +96,7 @@ namespace SugaryContabilidad_API.DataContext
                 entity.HasKey(e => e.IdFactura)
                     .HasName("PK__Facturab__50E7BAF1016F33FB");
 
-                entity.ToTable("Facturable", "SCC");
+                entity.ToTable("Facturables", "SCC");
 
                 entity.Property(e => e.CategoriaFactura)
                     .HasMaxLength(15)
@@ -144,11 +144,27 @@ namespace SugaryContabilidad_API.DataContext
 
                 entity.ToTable("Metodo_Venta", "SCC");
 
+                entity.Property(e => e.CedulaReferencia)
+                    .HasMaxLength(11)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Color)
                     .HasMaxLength(15)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Metodo)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NombrePerteneceReferencia)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NumeroReferencia)
+                    .HasMaxLength(15)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.TipoReferencia)
                     .HasMaxLength(50)
                     .IsUnicode(false);
             });
