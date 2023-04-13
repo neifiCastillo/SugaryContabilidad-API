@@ -2,10 +2,6 @@
 {
     public class HttpResponseText
     {
-        //Deudas
-        //public static readonly string validationCedula = "No se pudo validar la cédula.";
-        //public static readonly string NullCedula = "El Campo Cedula es null.";
-        //public static readonly string NoResultCedula = "Cedula ya registrada.";
 
         //Productos
         public static readonly string ExistProducto = "Este producto ya existe";
@@ -36,6 +32,19 @@
         public static readonly string ExistProductoVenta = "Este producto no existe";
         public static readonly string CantidadProducto = "No se puede vender mas que la cantidad existente del producto";
         public static readonly string PutVentaDelete = "Venta eliminado con exito!";
+
+        //Deudas
+        public static readonly string CreateDeudas = "Deuda creada con exito!";
+        public static readonly string ExistDeudas = "Este Deudas ya existe";
+        public static readonly string NullCedulaDeudas = "El Campo Cedula es null.";
+        public static readonly string validationCedulaDeudas = "No se pudo validar la cédula.";
+        public static readonly string PutDeudasNotFound = "Esta Deudas no pudo encontrarse!";
+        public static readonly string PutDeudas = "Metodo de venta modificado con exito!";
+        public static readonly string PutDeudaDelete = "Deuda pagada con exito!";
+        public static readonly string PutDeudaNopagada = "La deuda aun no se termina de pagar!";
+        public static readonly string DeudaPagada = "Esta Deuda ya se pago!";
+        public static readonly string AporteMayorADeuda = "El aporte no puede ser mayor a la deuda pendiente";
+
 
         //200OK
         public static readonly string OK = "OK.";

@@ -9,27 +9,27 @@ using SugaryContabilidad_API.Utils;
 
 namespace SugaryContabilidad_API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/[Controller]")]
-    public class VentaController : Controller
+    public class VentasController : Controller
     {
         private readonly SugaryContabilidadDBContext SCC;
         OperationRequest OR = new OperationRequest();
-        public VentaController(SugaryContabilidadDBContext SCC)
+        public VentasController(SugaryContabilidadDBContext SCC)
         {
             this.SCC = SCC;
         }
 
 
-        //[Authorize(Policy = "Admin")]
+        [Authorize(Policy = "Admin")]
         [HttpGet("GetVentas")]
         public async Task<IEnumerable<Venta>> GetVentas()
         {
             return await SCC.Ventas.Where(x => x.Status.Equals(true)).ToListAsync();
         }
 
-        //[Authorize(Policy = "Admin")]
+        [Authorize(Policy = "Admin")]
         [HttpGet("GetVentasById")]
         public async Task<ActionResult<Venta>> GetVentasById(string TicketVenta)
         {
@@ -41,11 +41,12 @@ namespace SugaryContabilidad_API.Controllers
             return Ok(Venta);
         }
 
-        //[Authorize(Policy = "Admin")]
+        [Authorize(Policy = "Admin")]
         [HttpPost("PostVentas")]
         public async Task<IActionResult> PostVentas(List<Venta> VentasList)
         {
-            int maxTicketVenta = SCC.Ventas.Max(x => x.IdVenta);
+            int maxTicketVenta = 0;
+            if (!SCC.Ventas.Any()) { maxTicketVenta = 1; } else { maxTicketVenta = SCC.Ventas.Max(x => x.IdVenta + 1);}
             foreach (Venta Ventas in VentasList)
             {
                 bool venta = SCC.Ventas.Where(x => x.TicketVenta == Ventas.TicketVenta).Count().Equals(0);
@@ -75,7 +76,7 @@ namespace SugaryContabilidad_API.Controllers
                     await UpdateCantidadProducto(Productos.IdProducto, CantidadProductoUpdate);
                 }
                 //////////////////////
-                Ventas.TicketVenta = "SCC" + (maxTicketVenta + 1);
+                Ventas.TicketVenta = "SCV"+maxTicketVenta;
                 Ventas.Status = true;
                 Ventas.CantidadPrecio = Ventas.CantidadProductoVendido * Ventas.PrecioVenta;
                 Ventas.FechaVenta = DateTime.Now;
@@ -88,7 +89,7 @@ namespace SugaryContabilidad_API.Controllers
             return Ok(OR);
         }
 
-        //[Authorize(Policy = "Admin")]
+        [Authorize(Policy = "Admin")]
         [HttpPut("PutVentasDelete")]
         public async Task<IActionResult> PutVentasDelete(string TicketVenta)
         {

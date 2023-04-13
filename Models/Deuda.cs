@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace SugaryContabilidad_API.Models
 {
     public partial class Deuda
     {
         public int IdDeuda { get; set; }
-        public string CedulaDeudor { get; set; } = null!;
-        public string NombreDeuda { get; set; } = null!;
+        public string TicketDeuda { get; set; } = null!;
+        public string? CedulaDeudor { get; set; }
+        public string? NombreDeudor { get; set; }
+        public string? DescripcionDeuda { get; set; }
         public int CantidadDeudaFijo { get; set; }
         public int CantidadDeudaEditable { get; set; }
         public DateTime FechaInicioDeuda { get; set; }

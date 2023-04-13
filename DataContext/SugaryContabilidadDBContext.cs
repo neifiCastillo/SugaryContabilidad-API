@@ -28,15 +28,6 @@ namespace SugaryContabilidad_API.DataContext
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
         public virtual DbSet<Venta> Ventas { get; set; } = null!;
 
-//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//        {
-//            if (!optionsBuilder.IsConfigured)
-//            {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//                optionsBuilder.UseSqlServer("Server=MSI;Database=SugaryContabilidadDB;User ID=sa;Password=123456;");
-//            }
-//        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Caja>(entity =>
@@ -68,15 +59,19 @@ namespace SugaryContabilidad_API.DataContext
                     .HasMaxLength(11)
                     .IsUnicode(false);
 
+                entity.Property(e => e.DescripcionDeuda).IsUnicode(false);
+
                 entity.Property(e => e.FechaAporte).HasColumnType("date");
 
                 entity.Property(e => e.FechaFinalDeuda).HasColumnType("date");
 
                 entity.Property(e => e.FechaInicioDeuda).HasColumnType("date");
 
-                entity.Property(e => e.NombreDeuda)
+                entity.Property(e => e.NombreDeudor)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.TicketDeuda).IsUnicode(false);
             });
 
             modelBuilder.Entity<EstadoProducto>(entity =>
