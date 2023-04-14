@@ -26,19 +26,20 @@ namespace SugaryContabilidad_API.Controllers
         [HttpGet("GetVentas")]
         public async Task<IEnumerable<Venta>> GetVentas()
         {
-            return await SCC.Ventas.Where(x => x.Status.Equals(true)).ToListAsync();
+            var ventas = await SCC.Ventas.Where(v => v.Status == true).GroupBy(v => v.TicketVenta).Select(g => g.First()).ToListAsync();
+            return ventas;
         }
 
         [Authorize(Policy = "Admin")]
         [HttpGet("GetVentasById")]
         public async Task<ActionResult<Venta>> GetVentasById(string TicketVenta)
         {
-            var Venta = await SCC.Ventas.Where(x => x.TicketVenta == TicketVenta && x.Status.Equals(true)).ToListAsync();
-            if (Venta is null)
+            var venta = await SCC.Ventas.Where(v => v.TicketVenta == TicketVenta && v.Status == true).FirstOrDefaultAsync();
+            if (venta is null)
             {
                 return NotFound();
             }
-            return Ok(Venta);
+            return Ok(venta);
         }
 
         [Authorize(Policy = "Admin")]
@@ -74,13 +75,12 @@ namespace SugaryContabilidad_API.Controllers
                 {
                     int CantidadProductoUpdate = Productos.CantidadDeProducto - Ventas.CantidadProductoVendido;
                     await UpdateCantidadProducto(Productos.IdProducto, CantidadProductoUpdate);
+                    Ventas.TicketVenta = "SCV" + maxTicketVenta;
+                    Ventas.Status = true;
+                    Ventas.CantidadPrecio = Ventas.CantidadProductoVendido * Ventas.PrecioVenta;
+                    Ventas.FechaVenta = DateTime.Now;
+                    SCC.Ventas.Add(Ventas);
                 }
-                //////////////////////
-                Ventas.TicketVenta = "SCV"+maxTicketVenta;
-                Ventas.Status = true;
-                Ventas.CantidadPrecio = Ventas.CantidadProductoVendido * Ventas.PrecioVenta;
-                Ventas.FechaVenta = DateTime.Now;
-                SCC.Ventas.Add(Ventas);
             }
             await SCC.SaveChangesAsync();
             OR.message = HttpResponseText.CreateVenta;

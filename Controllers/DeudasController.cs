@@ -9,7 +9,7 @@ using SugaryContabilidad_API.Utils;
 namespace SugaryContabilidad_API.Controllers
 {
 
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/[Controller]")]
     public class DeudasController : Controller
@@ -22,20 +22,21 @@ namespace SugaryContabilidad_API.Controllers
             this.SCC = SCC;
         }
 
-        //[Authorize(Policy = "Admin")]
+        [Authorize(Policy = "Admin")]
         [HttpGet("GetDeudas")]
         public async Task<IEnumerable<Deuda>> GetDeudas()
         {
             return await SCC.Deudas.Where(x => x.Pagada.Equals(false) && x.FechaFinalDeuda.Equals(null) && x.FechaAporte.Equals(null) && x.Aportado.Equals(null)).ToListAsync();
         }
 
-        //[Authorize(Policy = "Admin")]
-       [HttpGet("GetDeudasById")]
+        [Authorize(Policy = "Admin")]
+        [HttpGet("GetDeudasById")]
         public async Task<IEnumerable<Deuda>> GetDeudasById(string NombreDeudor)
         {
            return await SCC.Deudas.Where(x => x.NombreDeudor == NombreDeudor && x.Pagada.Equals(false) && x.FechaFinalDeuda.Equals(null) && x.FechaAporte.Equals(null) && x.Aportado.Equals(null)).ToListAsync();
         }
-        //[Authorize(Policy = "Admin")]
+
+        [Authorize(Policy = "Admin")]
         [HttpPost("PostDeudas")]
         public async Task<IActionResult> PostDeudas(Deuda Deuda)
         {
@@ -74,7 +75,7 @@ namespace SugaryContabilidad_API.Controllers
             return Ok(OR);
         }
 
-        //[Authorize(Policy = "Admin")]
+        [Authorize(Policy = "Admin")]
         [HttpPost("PostDeudasAporte")]
         public async Task<IActionResult> PostDeudasAporte(Deuda Deudas)
         {
@@ -111,8 +112,8 @@ namespace SugaryContabilidad_API.Controllers
             return Ok(OR);
         }
 
-    //[Authorize(Policy = "Admin")]
-    [HttpPut("PutDeudasDelete")]
+        [Authorize(Policy = "Admin")]
+        [HttpPut("PutDeudasDelete")]
         public async Task<IActionResult> PutDeudasDelete(string TicketDeuda)
         {
             var deudas = await SCC.Deudas.Where(x => x.TicketDeuda == TicketDeuda).OrderByDescending(x => x.IdDeuda).FirstOrDefaultAsync();
