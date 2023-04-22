@@ -9,8 +9,6 @@ namespace SugaryContabilidad_API.Models
         public string NombreCaja { get; set; } = null!;
         public int CantidadCaja { get; set; }
         public bool EstatusCaja { get; set; }
-        public int? LimiteDeCaja { get; set; }
-        public DateTime? FechaLimiteCaja { get; set; }
         public DateTime FechaCreacionCaja { get; set; }
         public DateTime FechaCierreCaja { get; set; }
         public bool Cerrada { get; set; }

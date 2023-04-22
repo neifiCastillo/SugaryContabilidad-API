@@ -27,7 +27,6 @@ namespace SugaryContabilidad_API.DataContext
         public virtual DbSet<Producto> Productos { get; set; } = null!;
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
         public virtual DbSet<Venta> Ventas { get; set; } = null!;
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Caja>(entity =>
@@ -40,8 +39,6 @@ namespace SugaryContabilidad_API.DataContext
                 entity.Property(e => e.FechaCierreCaja).HasColumnType("date");
 
                 entity.Property(e => e.FechaCreacionCaja).HasColumnType("date");
-
-                entity.Property(e => e.FechaLimiteCaja).HasColumnType("date");
 
                 entity.Property(e => e.NombreCaja)
                     .HasMaxLength(50)
@@ -93,25 +90,37 @@ namespace SugaryContabilidad_API.DataContext
 
                 entity.ToTable("Facturables", "SCC");
 
+                entity.Property(e => e.CantidadProductoVendido).IsUnicode(false);
+
                 entity.Property(e => e.CategoriaFactura)
                     .HasMaxLength(15)
                     .IsUnicode(false);
 
                 entity.Property(e => e.CedulaDeudor)
-                    .HasMaxLength(13)
+                    .HasMaxLength(11)
                     .IsUnicode(false);
 
-                entity.Property(e => e.FechaAporte).HasColumnType("date");
+                entity.Property(e => e.EstadoProducto)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.FechaFactura).HasColumnType("date");
 
-                entity.Property(e => e.NombreDeuda)
+                entity.Property(e => e.MetodoVenta)
+                    .HasMaxLength(25)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NombreDeudor)
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
                 entity.Property(e => e.NombreProducto)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.PrecioVenta).IsUnicode(false);
+
+                entity.Property(e => e.TicketDeuda).IsUnicode(false);
 
                 entity.Property(e => e.TicketFactura).IsUnicode(false);
 

@@ -4,22 +4,25 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Schema;
 using SugaryContabilidad_API.DataContext;
 using SugaryContabilidad_API.Models;
+using SugaryContabilidad_API.Services;
 using SugaryContabilidad_API.Utils;
 
 namespace SugaryContabilidad_API.Controllers
 {
 
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/[Controller]")]
     public class DeudasController : Controller
     {
         private readonly SugaryContabilidadDBContext SCC;
+        private readonly FacturablesServices FS;
         OperationRequest OR = new OperationRequest();
         ValidationCedula VC = new ValidationCedula();
-        public DeudasController(SugaryContabilidadDBContext SCC)
+        public DeudasController(SugaryContabilidadDBContext SCC, FacturablesServices FS)
         {
             this.SCC = SCC;
+            this.FS = FS;
         }
 
         [Authorize(Policy = "Admin")]
@@ -36,7 +39,7 @@ namespace SugaryContabilidad_API.Controllers
            return await SCC.Deudas.Where(x => x.NombreDeudor == NombreDeudor && x.Pagada.Equals(false) && x.FechaFinalDeuda.Equals(null) && x.FechaAporte.Equals(null) && x.Aportado.Equals(null)).ToListAsync();
         }
 
-        [Authorize(Policy = "Admin")]
+        //[Authorize(Policy = "Admin")]
         [HttpPost("PostDeudas")]
         public async Task<IActionResult> PostDeudas(Deuda Deuda)
         {
@@ -71,11 +74,12 @@ namespace SugaryContabilidad_API.Controllers
             OR.message = HttpResponseText.CreateDeudas;
             OR.isSucess = true;
             OR.Data = Deuda;
+            await PostFacturaDeuda(Deuda);
             await SCC.SaveChangesAsync();
             return Ok(OR);
         }
 
-        [Authorize(Policy = "Admin")]
+        //[Authorize(Policy = "Admin")]
         [HttpPost("PostDeudasAporte")]
         public async Task<IActionResult> PostDeudasAporte(Deuda Deudas)
         {
@@ -105,6 +109,7 @@ namespace SugaryContabilidad_API.Controllers
             deudas.CantidadDeudaEditable = CantidadDeudaEditableUpdate;
             deudas.Pagada = false;
             SCC.Deudas.Add(deudas);
+            await PostFacturaDeudaAporte(deudas);
             await SCC.SaveChangesAsync();
             OR.message = HttpResponseText.PutDeudas;
             OR.isSucess = true;
@@ -112,7 +117,7 @@ namespace SugaryContabilidad_API.Controllers
             return Ok(OR);
         }
 
-        [Authorize(Policy = "Admin")]
+        //[Authorize(Policy = "Admin")]
         [HttpPut("PutDeudasDelete")]
         public async Task<IActionResult> PutDeudasDelete(string TicketDeuda)
         {
@@ -140,6 +145,37 @@ namespace SugaryContabilidad_API.Controllers
             OR.isSucess = true;
             OR.Data = TicketDeuda;
             return Ok(OR);
+        }
+        private async Task<IActionResult> PostFacturaDeuda(Deuda Deudas)
+        {
+            // Crear una nueva factura
+            Facturable factura = new Facturable();
+            factura.TicketDeuda = Deudas.TicketDeuda;
+            factura.CedulaDeudor = Deudas.CedulaDeudor;
+            factura.NombreDeudor = Deudas.NombreDeudor;
+            factura.CantidadFactura = Deudas.CantidadDeudaFijo;
+
+            // Guardar la factura en la base de datos
+            await FS.CreateFacturaDeuda(factura);
+            return Ok();
+        }
+
+        private async Task<IActionResult> PostFacturaDeudaAporte(Deuda Deudas)
+        {
+            var deudas = await SCC.Facturables.Where(x => x.TicketDeuda == Deudas.TicketDeuda).ToListAsync();
+            int sumaDeAportes = deudas.Sum(x => x.Aportado ?? 0);
+            // Crear una nueva factura
+            Facturable factura = new Facturable();
+            factura.Aportado = Deudas.Aportado;
+            factura.SumaDeAporte = sumaDeAportes + factura.Aportado;
+            //-----------------------------------
+            factura.CantidadFactura = Deudas.CantidadDeudaFijo;
+            factura.TicketDeuda = Deudas.TicketDeuda;
+            factura.CedulaDeudor = Deudas.CedulaDeudor;
+            factura.NombreDeudor = Deudas.NombreDeudor;
+            // Guardar la factura en la base de datos
+            await FS.AporteFacturaDeuda(factura);
+            return Ok();
         }
     }
 }

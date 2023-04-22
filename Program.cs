@@ -21,6 +21,7 @@ builder.Services.AddSqlServer<SugaryContabilidadDBContext>(builder.Configuration
 //Sevcices
 builder.Services.AddScoped<LoginService>();
 builder.Services.AddScoped<ImagenesService>();
+builder.Services.AddScoped<FacturablesServices>();
 //validar token
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>

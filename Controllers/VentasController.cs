@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using SugaryContabilidad_API.DataContext;
 using SugaryContabilidad_API.Models;
 using SugaryContabilidad_API.Utils;
+using SugaryContabilidad_API.Services;
 
 namespace SugaryContabilidad_API.Controllers
 {
@@ -15,10 +16,12 @@ namespace SugaryContabilidad_API.Controllers
     public class VentasController : Controller
     {
         private readonly SugaryContabilidadDBContext SCC;
+        private readonly FacturablesServices FS;
         OperationRequest OR = new OperationRequest();
-        public VentasController(SugaryContabilidadDBContext SCC)
+        public VentasController(SugaryContabilidadDBContext SCC, FacturablesServices FS)
         {
             this.SCC = SCC;
+            this.FS = FS;
         }
 
 
@@ -82,6 +85,7 @@ namespace SugaryContabilidad_API.Controllers
                     SCC.Ventas.Add(Ventas);
                 }
             }
+            await PostFacturaVenta(VentasList);
             await SCC.SaveChangesAsync();
             OR.message = HttpResponseText.CreateVenta;
             OR.isSucess = true;
@@ -121,6 +125,25 @@ namespace SugaryContabilidad_API.Controllers
             }
             producto.CantidadDeProducto = CantidadProductoUpdate;
             await SCC.SaveChangesAsync();
+            return Ok();
+        }
+        private async Task<IActionResult> PostFacturaVenta(List<Venta> VentasList)
+        {
+            // Crear una nueva factura
+            Facturable factura = new Facturable();
+            factura.TicketVenta = VentasList.FirstOrDefault()?.TicketVenta;
+            factura.NombreProducto = string.Join(", ", VentasList.Select(v => v.NombreProducto));
+            factura.CantidadProductoVendido = string.Join(", ", VentasList.Select(v => v.CantidadProductoVendido));
+            factura.PrecioVenta = string.Join(", ", VentasList.Select(v => v.PrecioVenta));
+            factura.MetodoVenta = VentasList.FirstOrDefault()?.MetodoVenta;
+            factura.EstadoProducto = VentasList.FirstOrDefault()?.EstadoProducto;
+
+            //sumammos la cantidad de precios de venta
+            int totalPrecioVenta = VentasList.Sum(v => v.CantidadPrecio);
+            factura.CantidadFactura = totalPrecioVenta;
+
+            // Guardar la factura en la base de datos
+            await FS.CreateFacturaVenta(factura);
             return Ok();
         }
     }

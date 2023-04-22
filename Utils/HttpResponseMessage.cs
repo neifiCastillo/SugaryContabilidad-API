@@ -39,7 +39,7 @@
         public static readonly string NullCedulaDeudas = "El Campo Cedula es null.";
         public static readonly string validationCedulaDeudas = "No se pudo validar la cédula.";
         public static readonly string PutDeudasNotFound = "Esta Deudas no pudo encontrarse!";
-        public static readonly string PutDeudas = "Metodo de venta modificado con exito!";
+        public static readonly string PutDeudas = "Aporte a deuda realizado con exito!";
         public static readonly string PutDeudaDelete = "Deuda pagada con exito!";
         public static readonly string PutDeudaNopagada = "La deuda aun no se termina de pagar!";
         public static readonly string DeudaPagada = "Esta Deuda ya se pago!";
