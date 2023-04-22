@@ -45,6 +45,14 @@
         public static readonly string DeudaPagada = "Esta Deuda ya se pago!";
         public static readonly string AporteMayorADeuda = "El aporte no puede ser mayor a la deuda pendiente";
 
+        //Caja
+        public static readonly string ExistCaja = "Esta Caja ya existe";
+        public static readonly string CajasSinCerrar = "No se puede crear nueva caja , Debe de cerrar la caja que actualmente esta abierta";
+        public static readonly string PutCajaNotFound = "Esta Caja no pudo encontrarse!";
+        public static readonly string CreateCaja = "Caja creada con exito!";
+        public static readonly string PutCaja = "Caja modificada con exito!";
+        public static readonly string PutCajaDelete = "Caja cerrada con exito!";
+
 
         //200OK
         public static readonly string OK = "OK.";
