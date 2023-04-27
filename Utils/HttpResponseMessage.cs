@@ -32,6 +32,8 @@
         public static readonly string ExistProductoVenta = "Este producto no existe";
         public static readonly string CantidadProducto = "No se puede vender mas que la cantidad existente del producto";
         public static readonly string PutVentaDelete = "Venta eliminado con exito!";
+        public static readonly string VentaEmpty = "No se registro producto que vender!";
+        public static readonly string MetodoVentaEmpty = "Debe de seleccionar un metodod de venta!";
 
         //Deudas
         public static readonly string CreateDeudas = "Deuda creada con exito!";

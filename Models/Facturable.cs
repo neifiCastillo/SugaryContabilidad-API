@@ -6,6 +6,7 @@ namespace SugaryContabilidad_API.Models
     public partial class Facturable
     {
         public int IdFactura { get; set; }
+        public int IdCaja { get; set; }
         public string TicketFactura { get; set; } = null!;
         public string CategoriaFactura { get; set; } = null!;
         public int CantidadFactura { get; set; }
@@ -16,6 +17,7 @@ namespace SugaryContabilidad_API.Models
         public string? PrecioVenta { get; set; }
         public string? MetodoVenta { get; set; }
         public string? EstadoProducto { get; set; }
+        public bool? VentaEliminada { get; set; }
         public string? TicketDeuda { get; set; }
         public string? CedulaDeudor { get; set; }
         public string? NombreDeudor { get; set; }

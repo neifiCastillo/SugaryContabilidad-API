@@ -9,7 +9,7 @@ using SugaryContabilidad_API.Utils;
 namespace SugaryContabilidad_API.Controllers
 {
 
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/[Controller]")]
     public class CajaController : Controller
@@ -24,14 +24,14 @@ namespace SugaryContabilidad_API.Controllers
         }
 
 
-        //[Authorize(Policy = "Admin")]
+        [Authorize(Policy = "Admin")]
         [HttpGet("GetCaja")]
         public async Task<IEnumerable<Caja>> GetCaja()
         {
             return await SCC.Cajas.Where(x => x.Cerrada.Equals(false)).ToListAsync();
         }
 
-        //[Authorize(Policy = "Admin")]
+        [Authorize(Policy = "Admin")]
         [HttpPost("PostCaja")]
         public async Task<IActionResult> PostCaja(Caja caja)
         {
@@ -63,7 +63,7 @@ namespace SugaryContabilidad_API.Controllers
             return Ok(OR);
         }
 
-        //[Authorize(Policy = "Admin")]
+        [Authorize(Policy = "Admin")]
         [HttpPut("PutCaja")]
         public async Task<IActionResult> PutCaja(int IdCaja, Caja caja)
         {
@@ -92,7 +92,7 @@ namespace SugaryContabilidad_API.Controllers
             return Ok(OR);
         }
 
-        //[Authorize(Policy = "Admin")]
+        [Authorize(Policy = "Admin")]
         [HttpPut("PutCajaDelete")]
         public async Task<IActionResult> PutCajaDelete(int IdCaja)
         {
@@ -106,7 +106,7 @@ namespace SugaryContabilidad_API.Controllers
             ExistCaja.FechaCierreCaja = DateTime.Now;
             ExistCaja.Cerrada = true;
             await SCC.SaveChangesAsync();
-            OR.message = HttpResponseText.PutProductoDelete;
+            OR.message = HttpResponseText.PutCajaDelete;
             OR.isSucess = true;
             OR.Data = ExistCaja.NombreCaja;
             return Ok(OR);

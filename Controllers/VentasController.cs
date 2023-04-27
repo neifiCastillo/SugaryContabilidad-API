@@ -51,6 +51,21 @@ namespace SugaryContabilidad_API.Controllers
         {
             int maxTicketVenta = 0;
             if (!SCC.Ventas.Any()) { maxTicketVenta = 1; } else { maxTicketVenta = SCC.Ventas.Max(x => x.IdVenta + 1);}
+            // Se verifica que haya al menos un producto en la lista de ventas
+            if (VentasList.Count == 0)
+            {
+                OR.message = HttpResponseText.VentaEmpty;
+                OR.isSucess = false;
+                return NotFound(OR);
+            }
+            // Se verifica si el primer producto tiene un método de venta registrado
+            var primerProducto = VentasList[0];
+            if (string.IsNullOrWhiteSpace(primerProducto.MetodoVenta))
+            {
+                OR.message = HttpResponseText.MetodoVentaEmpty;
+                OR.isSucess = false;
+                return NotFound(OR);
+            }
             foreach (Venta Ventas in VentasList)
             {
                 bool venta = SCC.Ventas.Where(x => x.TicketVenta == Ventas.TicketVenta).Count().Equals(0);
@@ -78,9 +93,10 @@ namespace SugaryContabilidad_API.Controllers
                 {
                     int CantidadProductoUpdate = Productos.CantidadDeProducto - Ventas.CantidadProductoVendido;
                     await UpdateCantidadProducto(Productos.IdProducto, CantidadProductoUpdate);
-                    Ventas.TicketVenta = "SCV" + maxTicketVenta;
+                    Ventas.TicketVenta = "SCV"+maxTicketVenta;
                     Ventas.Status = true;
                     Ventas.CantidadPrecio = Ventas.CantidadProductoVendido * Ventas.PrecioVenta;
+                    Ventas.MetodoVenta = primerProducto.MetodoVenta;
                     Ventas.FechaVenta = DateTime.Now;
                     SCC.Ventas.Add(Ventas);
                 }
@@ -108,6 +124,7 @@ namespace SugaryContabilidad_API.Controllers
             {
                 venta.Status = false;
             }
+            await FS.DeleteCantdadVendidaVenta(TicketVenta);
             await SCC.SaveChangesAsync();
             OR.message = HttpResponseText.PutVentaDelete;
             OR.isSucess = true;

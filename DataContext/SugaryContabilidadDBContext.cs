@@ -114,9 +114,7 @@ namespace SugaryContabilidad_API.DataContext
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.NombreProducto)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.NombreProducto).IsUnicode(false);
 
                 entity.Property(e => e.PrecioVenta).IsUnicode(false);
 
