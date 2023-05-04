@@ -29,7 +29,7 @@ namespace SugaryContabilidad_API.Controllers
         [HttpGet("GetVentas")]
         public async Task<IEnumerable<Venta>> GetVentas()
         {
-            var ventas = await SCC.Ventas.Where(v => v.Status == true).GroupBy(v => v.TicketVenta).Select(g => g.First()).ToListAsync();
+            var ventas = await SCC.Ventas.Where(v => v.Eliminada == false).GroupBy(v => v.TicketVenta).Select(g => g.First()).ToListAsync();
             return ventas;
         }
 
@@ -37,7 +37,7 @@ namespace SugaryContabilidad_API.Controllers
         [HttpGet("GetVentasById")]
         public async Task<ActionResult<Venta>> GetVentasById(string TicketVenta)
         {
-            var venta = await SCC.Ventas.Where(v => v.TicketVenta == TicketVenta && v.Status == true).FirstOrDefaultAsync();
+            var venta = await SCC.Ventas.Where(v => v.TicketVenta == TicketVenta && v.Eliminada == false).FirstOrDefaultAsync();
             if (venta is null)
             {
                 return NotFound();
@@ -94,7 +94,7 @@ namespace SugaryContabilidad_API.Controllers
                     int CantidadProductoUpdate = Productos.CantidadDeProducto - Ventas.CantidadProductoVendido;
                     await UpdateCantidadProducto(Productos.IdProducto, CantidadProductoUpdate);
                     Ventas.TicketVenta = "SCV"+maxTicketVenta;
-                    Ventas.Status = true;
+                    Ventas.Eliminada = false;
                     Ventas.CantidadPrecio = Ventas.CantidadProductoVendido * Ventas.PrecioVenta;
                     Ventas.MetodoVenta = primerProducto.MetodoVenta;
                     Ventas.FechaVenta = DateTime.Now;
@@ -122,7 +122,7 @@ namespace SugaryContabilidad_API.Controllers
             }
             foreach (var venta in ExistVenta)
             {
-                venta.Status = false;
+                venta.Eliminada = true;
             }
             await FS.DeleteCantdadVendidaVenta(TicketVenta);
             await SCC.SaveChangesAsync();

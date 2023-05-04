@@ -23,14 +23,14 @@ namespace SugaryContabilidad_API.Controllers
         [HttpGet("GetEstadoProducto")]
         public async Task<IEnumerable<EstadoProducto>> GetEstadoProducto()
         {
-            return await SCC.EstadoProductos.Where(x => x.Status.Equals(true)).ToListAsync();
+            return await SCC.EstadoProductos.Where(x => x.Eliminado.Equals(false)).ToListAsync();
         }
 
         [Authorize(Policy = "Admin")]
         [HttpGet("GetEstadoProductoById")]
         public async Task<ActionResult<EstadoProducto>> GetEstadoProductoById(int IdEstado)
         {
-            var Estado = await SCC.EstadoProductos.Where(x => x.IdEstado == IdEstado && x.Status.Equals(true)).ToListAsync();
+            var Estado = await SCC.EstadoProductos.Where(x => x.IdEstado == IdEstado && x.Eliminado.Equals(false)).ToListAsync();
             if (Estado is null)
             {
                 return NotFound();
@@ -50,7 +50,7 @@ namespace SugaryContabilidad_API.Controllers
                 return NotFound(OR);
             }
             SCC.EstadoProductos.Add(EstadoProducto);
-            EstadoProducto.Status = true;
+            EstadoProducto.Eliminado = false;
             OR.message = HttpResponseText.CreateEstadoProducto;
             OR.isSucess = true;
             OR.Data = EstadoProducto;
@@ -92,7 +92,7 @@ namespace SugaryContabilidad_API.Controllers
                 OR.isSucess = false;
                 return NotFound(OR);
             }
-            ExistEstado.Status = false;
+            ExistEstado.Eliminado = true;
             await SCC.SaveChangesAsync();
             OR.message = HttpResponseText.PutEstadoDelete;
             OR.isSucess = true;

@@ -12,6 +12,6 @@ namespace SugaryContabilidad_API.Models
         public string CedulaReferencia { get; set; } = null!;
         public string? NombrePerteneceReferencia { get; set; }
         public string? Color { get; set; }
-        public bool Status { get; set; }
+        public bool Eliminado { get; set; }
     }
 }

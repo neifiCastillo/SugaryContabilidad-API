@@ -24,14 +24,14 @@ namespace SugaryContabilidad_API.Controllers
         [HttpGet("GetProductos")]
         public async Task<IEnumerable<Producto>> GetProductos()
         {
-            return await SCC.Productos.Where(x => x.Estatus.Equals(true)).ToListAsync();
+            return await SCC.Productos.Where(x => x.Eliminado.Equals(false)).ToListAsync();
         }
 
         [Authorize(Policy = "Admin")]
         [HttpGet("GetProductosById")]
         public async Task<ActionResult<Producto>> GetProductosById(int IdProducto)
         {
-            var product = await SCC.Productos.Where(x => x.IdProducto == IdProducto && x.Estatus.Equals(true)).ToListAsync();
+            var product = await SCC.Productos.Where(x => x.IdProducto == IdProducto && x.Eliminado.Equals(false)).ToListAsync();
             if (product is null) {
                return NotFound();
             }
@@ -50,7 +50,7 @@ namespace SugaryContabilidad_API.Controllers
                 return NotFound(OR);
             }
             SCC.Productos.Add(Producto);
-            Producto.Estatus = true;
+            Producto.Eliminado = false;
             Producto.FechaCreacion = DateTime.Now;
             OR.message = HttpResponseText.CreateProducto;
             OR.isSucess = true;
@@ -84,7 +84,7 @@ namespace SugaryContabilidad_API.Controllers
             ExistProduct.PrecioVenta = Producto.PrecioVenta;
             ExistProduct.FechaCompra = Producto.FechaCompra;
             ExistProduct.FechaVencimiento = Producto.FechaVencimiento;
-            ExistProduct.Estatus = true;
+            ExistProduct.Eliminado = false;
             ExistProduct.FechaCreacion = Producto.FechaCreacion;
 
             await SCC.SaveChangesAsync();
@@ -105,8 +105,7 @@ namespace SugaryContabilidad_API.Controllers
                 OR.isSucess = false;
                 return NotFound(OR);
             }
-            ExistProduct.Estatus = false;
-
+            ExistProduct.Eliminado = true;
             await SCC.SaveChangesAsync();
             OR.message = HttpResponseText.PutProductoDelete;
             OR.isSucess = true;

@@ -7,6 +7,6 @@ namespace SugaryContabilidad_API.Models
     {
         public int IdEstado { get; set; }
         public string Estado { get; set; } = null!;
-        public bool Status { get; set; }
+        public bool Eliminado { get; set; }
     }
 }

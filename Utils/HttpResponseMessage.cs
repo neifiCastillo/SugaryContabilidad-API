@@ -55,6 +55,12 @@
         public static readonly string PutCaja = "Caja modificada con exito!";
         public static readonly string PutCajaDelete = "Caja cerrada con exito!";
 
+        //Usuarios
+        public static readonly string ExistUsuario = "Este Usuario ya existe";
+        public static readonly string CreateUsuario = "Usuario creado con exito!";
+        public static readonly string PutUsuarioNotFound = "Este Usuario no pudo encontrarse!";
+        public static readonly string PutUsuario = "Usuario modificado con exito!";
+        public static readonly string PutUsuarioDelete = "Usuario eliminado con exito!";
 
         //200OK
         public static readonly string OK = "OK.";

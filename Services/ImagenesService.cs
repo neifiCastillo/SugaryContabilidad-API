@@ -23,12 +23,12 @@ namespace SugaryContabilidad_API.Services
         //imagenes de usuarios
         public async Task<IReadOnlyCollection<ImagenesUsuario>> RunImagenUsuario()
         {
-            return await SCC.ImagenesUsuarios.Where(x => x.Status.Equals(true)).ToArrayAsync();
+            return await SCC.ImagenesUsuarios.Where(x => x.Status.Equals(false)).ToArrayAsync();
         }
 
         public async Task<IReadOnlyCollection<ImagenesUsuario>> RunImagenUsuarioById(int IdUsuario)
         {
-            var usuario = await SCC.ImagenesUsuarios.Where(x => x.IdUsuario == IdUsuario && x.Status.Equals(true)).ToListAsync();
+            var usuario = await SCC.ImagenesUsuarios.Where(x => x.IdUsuario == IdUsuario && x.Status.Equals(false)).ToListAsync();
             if (usuario is null)
             {
                 throw new ArgumentException("El usuario que se quiere filtrar no existe");
@@ -52,7 +52,7 @@ namespace SugaryContabilidad_API.Services
                 throw new ArgumentException("El usuario ya tiene una imagen registrada");
             }
             var image = new ImagenesUsuario() { IdUsuario = requets.id };
-            image.Status = true;
+            image.Status = false;
             image.Path = await Upload(requets.Base64);
             await SCC.ImagenesUsuarios.AddAsync(image);
             await SCC.SaveChangesAsync();
@@ -78,7 +78,7 @@ namespace SugaryContabilidad_API.Services
             {
                 throw new ArgumentException("La imagen de usuario que se quiere eliminar no existe");
             }
-            ExistUsuario.Status = false;
+            ExistUsuario.Status = true;
             await SCC.SaveChangesAsync();
             return ExistUsuario;
         }
@@ -86,12 +86,12 @@ namespace SugaryContabilidad_API.Services
         //Imagenes de productos
         public async Task<IReadOnlyCollection<ImagenesProducto>> RunImagenProductos()
         {
-            return await SCC.ImagenesProductos.Where(x => x.Status.Equals(true)).ToArrayAsync();
+            return await SCC.ImagenesProductos.Where(x => x.Status.Equals(false)).ToArrayAsync();
         }
 
         public async Task<IReadOnlyCollection<ImagenesProducto>> RunImagenProductosById(int IdProducto)
         {
-            var producto = await SCC.ImagenesProductos.Where(x => x.IdProducto == IdProducto && x.Status.Equals(true)).ToListAsync();
+            var producto = await SCC.ImagenesProductos.Where(x => x.IdProducto == IdProducto && x.Status.Equals(false)).ToListAsync();
             if (producto is null)
             {
                 throw new ArgumentException("El Producto que se quiere filtrar no existe");
@@ -115,7 +115,7 @@ namespace SugaryContabilidad_API.Services
                 throw new ArgumentException("El Producto ya tiene una imagen registrada");
             }
             var image = new ImagenesProducto() { IdProducto = requets.id };
-            image.Status = true;
+            image.Status = false;
             image.Path = await Upload(requets.Base64);
             await SCC.ImagenesProductos.AddAsync(image);
             await SCC.SaveChangesAsync();
@@ -141,7 +141,7 @@ namespace SugaryContabilidad_API.Services
             {
                 throw new ArgumentException("La imagen de producto que se quiere eliminar no existe");
             }
-            existProducto.Status = false;
+            existProducto.Status = true;
             await SCC.SaveChangesAsync();
             return existProducto;
         }

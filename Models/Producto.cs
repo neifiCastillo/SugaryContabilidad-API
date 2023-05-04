@@ -14,7 +14,7 @@ namespace SugaryContabilidad_API.Models
         public int PrecioVenta { get; set; }
         public DateTime FechaCompra { get; set; }
         public DateTime? FechaVencimiento { get; set; }
-        public bool Estatus { get; set; }
+        public bool Eliminado { get; set; }
         public DateTime FechaCreacion { get; set; }
     }
 }

@@ -25,14 +25,14 @@ namespace SugaryContabilidad_API.Controllers
         [HttpGet("GetMetodoVenta")]
         public async Task<IEnumerable<MetodoVentum>> GetMetodoVenta()
         {
-            return await SCC.MetodoVenta.Where(x => x.Status.Equals(true)).ToListAsync();
+            return await SCC.MetodoVenta.Where(x => x.Eliminado.Equals(false)).ToListAsync();
         }
 
         [Authorize(Policy = "Admin")]
         [HttpGet("GetMetodoVentaById")]
         public async Task<ActionResult<MetodoVentum>> GetMetodoVentaById(int IdMetodo)
         {
-            var Metodo = await SCC.MetodoVenta.Where(x => x.IdMetodo == IdMetodo && x.Status.Equals(true)).ToListAsync();
+            var Metodo = await SCC.MetodoVenta.Where(x => x.IdMetodo == IdMetodo && x.Eliminado.Equals(false)).ToListAsync();
             if (Metodo is null)
             {
                 return NotFound();
@@ -65,7 +65,7 @@ namespace SugaryContabilidad_API.Controllers
                 return NotFound(OR);
             }
             SCC.MetodoVenta.Add(MetodoVenta);
-            MetodoVenta.Status = true;
+            MetodoVenta.Eliminado = false;
             OR.message = HttpResponseText.CreateMetodoVenta;
             OR.isSucess = true;
             OR.Data = MetodoVenta;
@@ -119,7 +119,7 @@ namespace SugaryContabilidad_API.Controllers
                 OR.isSucess = false;
                 return NotFound(OR);
             }
-            ExistMetodo.Status = false;
+            ExistMetodo.Eliminado = true;
             await SCC.SaveChangesAsync();
             OR.message = HttpResponseText.PutMetodoDelete;
             OR.isSucess = true;
